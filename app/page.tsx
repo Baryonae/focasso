@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Paytone_One } from "next/font/google";
+
 import {
   Table,
   TableHeader,
@@ -18,6 +19,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 
 import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
@@ -44,7 +46,12 @@ export default function Home() {
   }, [isRunning]);
 
   const handleStart = () => {
-    setIsRunning(true);
+    if (document.fullscreenElement) {
+      setIsRunning(true);
+    } else {
+      document.documentElement.requestFullscreen();
+      setIsRunning(true);
+    }
   };
 
   const handleStop = () => {
@@ -56,6 +63,30 @@ export default function Home() {
     setElapsedTime(0);
   };
   const formattedTime = new Date(elapsedTime).toISOString().slice(-13, -5); // HH:MM:SS format
+  function toggleFullScreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  }
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (document.fullscreenElement) {
+        console.log("Entered fullscreen mode");
+      } else {
+        console.log("Exited fullscreen mode");
+        setIsRunning(false);
+        setTimeout(() => setElapsedTime(0), 10); // Delay by 10 milliseconds
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
 
   return (
     <div>
@@ -79,7 +110,12 @@ export default function Home() {
               </TableCell>
               <TableCell>Do maths</TableCell>
               <TableCell>
-                <Button color="primary" variant="flat" onPress={onOpen}>
+                <Button
+                  color="primary"
+                  variant="flat"
+                  onPress={onOpen}
+                  onClick={toggleFullScreen}
+                >
                   Start
                 </Button>
                 <Modal
@@ -140,6 +176,14 @@ export default function Home() {
             </TableRow>
           </TableBody>
         </Table>
+        <Card className="my-8 w-1/2 max-sm:w-full">
+          <CardBody className="text-red inline-flex">
+            <div>
+              Alert: The Timer is going to reset when you exit the fullscreen
+              mode
+            </div>
+          </CardBody>
+        </Card>
       </div>
     </div>
   );

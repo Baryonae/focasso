@@ -33,6 +33,8 @@ import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Open_Sans } from "next/font/google";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaPencilAlt } from "react-icons/fa";
 const opensans = Open_Sans({ weight: "300", subsets: ["latin"] });
 const Paytone = Paytone_One({ weight: "400", subsets: ["latin"] });
 
@@ -156,7 +158,7 @@ export default function Home() {
           </NavbarContent>
         </Navbar>
       </div>
-      <div className="px-48 max-sm:p-0 px-auto my-20">
+      <div className="px-48 max-sm:p-0 px-auto my-20 max-md:p-0 max-lg:p-0">
         <div className="mx-12 my-8 ">
           <Popover placement="right" showArrow offset={10}>
             <PopoverTrigger>
@@ -197,6 +199,7 @@ export default function Home() {
               <TableColumn>COMPLETION</TableColumn>
               <TableColumn>TASK</TableColumn>
               <TableColumn>TIMER</TableColumn>
+              <TableColumn>EDIT</TableColumn>
             </TableHeader>
             <TableBody emptyContent={"No Tasks to display."}>
               {taskStored.map((task) => (
@@ -225,6 +228,7 @@ export default function Home() {
                     >
                       Start
                     </Button>
+
                     <Modal
                       isOpen={isOpen}
                       onOpenChange={onOpenChange}
@@ -280,11 +284,40 @@ export default function Home() {
                       </ModalContent>
                     </Modal>
                   </TableCell>
+                  <TableCell>
+                    <Button
+                      isIconOnly
+                      color="danger"
+                      variant="faded"
+                      aria-label="Take a photo"
+                      onClick={() => {
+                        async function deleteItem() {
+                          const { error } = await supabase
+                            .from("tasks")
+                            .delete()
+                            .eq("taskName", task.taskName);
+                        }
+                        deleteItem();
+                      }}
+                    >
+                      <MdDeleteOutline />
+                    </Button>
+                    <Button
+                      isIconOnly
+                      color="warning"
+                      variant="faded"
+                      aria-label="Take a photo"
+                      className="mx-6"
+                      onClick={() => {}}
+                    >
+                      <FaPencilAlt />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          <Card className="my-8 w-1/2 max-sm:w-full">
+          <Card className="my-8 w-full max-sm:w-full">
             <CardBody className="text-red inline-flex">
               <div>
                 Alert: The Timer is going to reset when you exit the fullscreen

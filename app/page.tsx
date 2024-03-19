@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { Paytone_One } from "next/font/google";
 import { supabase } from "./client";
-import "./style.css";
+
 import {
   Popover,
   PopoverTrigger,

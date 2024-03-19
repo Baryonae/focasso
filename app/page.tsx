@@ -2,11 +2,13 @@
 import Image from "next/image";
 import { Paytone_One } from "next/font/google";
 import { supabase } from "./client";
+import "./style.css";
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
   Chip,
+  Divider,
 } from "@nextui-org/react";
 import {
   Navbar,
@@ -42,6 +44,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FaPencilAlt } from "react-icons/fa";
 import { HiOutlinePencil } from "react-icons/hi";
 import { CiCirclePlus, CiShare1 } from "react-icons/ci";
+import { HiMiniBolt } from "react-icons/hi2";
 const opensans = Open_Sans({ weight: "300", subsets: ["latin"] });
 const Paytone = Paytone_One({ weight: "400", subsets: ["latin"] });
 
@@ -136,7 +139,12 @@ export default function Home() {
       <div className={opensans.className}>
         <Navbar>
           <NavbarBrand>
-            <p className=" text-inherit">Productivity App</p>
+            <div className="inline-flex">
+              <HiMiniBolt className="inline-flex mr-2" size={25} />
+              <div id="titleText" className="titleText text-xl">
+                Focasso
+              </div>
+            </div>
           </NavbarBrand>
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
             <NavbarItem>
@@ -166,6 +174,7 @@ export default function Home() {
             </NavbarItem>
           </NavbarContent>
         </Navbar>
+        <Divider className="my-0" />
       </div>
       <div className="px-48 max-sm:p-0 px-auto my-20 max-md:p-0 max-lg:p-0">
         <div className="mx-12 my-8">

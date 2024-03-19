@@ -16,7 +16,7 @@ Planned Features
 ```
 
 ## Screenshots
- ![image](https://github.com/Baryonae/productivityapp/assets/73114771/6fe1e288-c6f1-4d14-9cf6-308be65b5b93)
+ ![image](https://github.com/Baryonae/productivityapp/assets/73114771/ffe3bf91-e302-4423-abd5-b51c16708f76)
  ![image](https://github.com/Baryonae/productivityapp/assets/73114771/5a66d1fb-0806-4a00-9e60-9aa53a684e9b)
  ![image](https://github.com/Baryonae/productivityapp/assets/73114771/5667d14d-019a-4fea-a6ff-8c5af239d960)
 

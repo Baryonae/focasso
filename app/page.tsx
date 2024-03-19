@@ -136,46 +136,6 @@ export default function Home() {
 
   return (
     <div>
-      <div className={opensans.className}>
-        <Navbar>
-          <NavbarBrand>
-            <div className="inline-flex">
-              <HiMiniBolt className="inline-flex mr-2" size={25} />
-              <div id="titleText" className="titleText text-xl">
-                Focasso
-              </div>
-            </div>
-          </NavbarBrand>
-          <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            <NavbarItem>
-              <Link color="foreground" href="#">
-                Features
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link color="foreground" href="#">
-                Integrations
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link color="foreground" href="#">
-                About
-              </Link>
-            </NavbarItem>
-          </NavbarContent>
-          <NavbarContent justify="end">
-            <NavbarItem className="hidden lg:flex">
-              <Link href="#">Login</Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Button as={Link} color="primary" href="#" variant="flat">
-                Sign Up
-              </Button>
-            </NavbarItem>
-          </NavbarContent>
-        </Navbar>
-        <Divider className="my-0" />
-      </div>
       <div className="px-48 max-sm:p-0 px-auto my-20 max-md:p-0 max-lg:p-0">
         <div className="mx-12 my-8">
           <Popover placement="right" showArrow offset={10}>

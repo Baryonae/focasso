@@ -41,6 +41,7 @@ import { Open_Sans } from "next/font/google";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaPencilAlt } from "react-icons/fa";
 import { HiOutlinePencil } from "react-icons/hi";
+import { CiCirclePlus, CiShare1 } from "react-icons/ci";
 const opensans = Open_Sans({ weight: "300", subsets: ["latin"] });
 const Paytone = Paytone_One({ weight: "400", subsets: ["latin"] });
 
@@ -170,7 +171,10 @@ export default function Home() {
         <div className="mx-12 my-8">
           <Popover placement="right" showArrow offset={10}>
             <PopoverTrigger>
-              <Button color="primary">Create new Task</Button>
+              <Button color="warning" variant="flat" className="w-fit p-6">
+                <CiCirclePlus size={25} />
+                Create
+              </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[240px]">
               {(titleProps) => (
@@ -197,6 +201,10 @@ export default function Home() {
               )}
             </PopoverContent>
           </Popover>
+          <Button color="secondary" variant="flat" className="w-fit p-6 mx-4">
+            <CiShare1 size={25} />
+            Share
+          </Button>
         </div>
         <div className="mt-8 px-12 w-full">
           <Table

@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { Paytone_One } from "next/font/google";
 import { supabase } from "./client";
-
+import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import {
   Table,
   TableHeader,
@@ -106,14 +106,49 @@ export default function Home() {
     }
   }
   getData();
-  function sendDataAndClose() {}
+  const [taskValue, setTaskValue] = useState("");
+  async function sendData() {
+    const { error } = await supabase
+      .from("tasks")
+      .insert({ taskName: taskValue });
+  }
 
   return (
     <div>
       <div className="p-12 text-5xl text-gray-300">
         <div className={Paytone.className}>Productivity App</div>
       </div>
+      <div className="mx-12 my-8">
+        <Popover placement="right" showArrow offset={10}>
+          <PopoverTrigger>
+            <Button color="primary">Create new Task</Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[240px]">
+            {(titleProps) => (
+              <div className="px-1 py-2 w-full">
+                <p
+                  className="text-small font-bold text-foreground"
+                  {...titleProps}
+                >
+                  Create New Task
+                </p>
+                <div className="mt-2 flex flex-col gap-2 w-full">
+                  <Input
+                    size="sm"
+                    variant="bordered"
+                    value={taskValue}
+                    onValueChange={setTaskValue}
+                  />
 
+                  <Button variant="flat" color="secondary" onPress={sendData}>
+                    Add
+                  </Button>
+                </div>
+              </div>
+            )}
+          </PopoverContent>
+        </Popover>
+      </div>
       <div className="mt-8 px-12 w-full">
         <Table
           aria-label="Example static collection table"

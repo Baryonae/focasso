@@ -4,6 +4,12 @@ import { Paytone_One } from "next/font/google";
 import { supabase } from "./client";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+} from "@nextui-org/react";
+import {
   Table,
   TableHeader,
   TableColumn,
@@ -26,7 +32,8 @@ import { Card, CardBody } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
+import { Open_Sans } from "next/font/google";
+const opensans = Open_Sans({ weight: "300", subsets: ["latin"] });
 const Paytone = Paytone_One({ weight: "400", subsets: ["latin"] });
 
 export default function Home() {
@@ -115,144 +122,177 @@ export default function Home() {
 
   return (
     <div>
-      <div className="p-12 text-5xl text-gray-300">
-        <div className={Paytone.className}>Productivity App</div>
+      <div className={opensans.className}>
+        <Navbar>
+          <NavbarBrand>
+            <p className=" text-inherit">Productivity App</p>
+          </NavbarBrand>
+          <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <NavbarItem>
+              <Link color="foreground" href="#">
+                Features
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link color="foreground" href="#">
+                Integrations
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link color="foreground" href="#">
+                About
+              </Link>
+            </NavbarItem>
+          </NavbarContent>
+          <NavbarContent justify="end">
+            <NavbarItem className="hidden lg:flex">
+              <Link href="#">Login</Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={Link} color="primary" href="#" variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </NavbarContent>
+        </Navbar>
       </div>
-      <div className="mx-12 my-8">
-        <Popover placement="right" showArrow offset={10}>
-          <PopoverTrigger>
-            <Button color="primary">Create new Task</Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[240px]">
-            {(titleProps) => (
-              <div className="px-1 py-2 w-full">
-                <p
-                  className="text-small font-bold text-foreground"
-                  {...titleProps}
-                >
-                  Create New Task
-                </p>
-                <div className="mt-2 flex flex-col gap-2 w-full">
-                  <Input
-                    size="sm"
-                    variant="bordered"
-                    value={taskValue}
-                    onValueChange={setTaskValue}
-                  />
+      <div className="px-48 max-sm:p-0 px-auto my-20">
+        <div className="mx-12 my-8 ">
+          <Popover placement="right" showArrow offset={10}>
+            <PopoverTrigger>
+              <Button color="primary">Create new Task</Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[240px]">
+              {(titleProps) => (
+                <div className="px-1 py-2 w-full">
+                  <p
+                    className="text-small font-bold text-foreground"
+                    {...titleProps}
+                  >
+                    Create New Task
+                  </p>
+                  <div className="mt-2 flex flex-col gap-2 w-full">
+                    <Input
+                      size="sm"
+                      variant="bordered"
+                      value={taskValue}
+                      onValueChange={setTaskValue}
+                    />
 
-                  <Button variant="flat" color="secondary" onPress={sendData}>
-                    Add
-                  </Button>
+                    <Button variant="flat" color="secondary" onPress={sendData}>
+                      Add
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </PopoverContent>
-        </Popover>
-      </div>
-      <div className="mt-8 px-12 w-full">
-        <Table
-          aria-label="Example static collection table"
-          className="w-1/2 max-sm:w-full"
-        >
-          <TableHeader>
-            <TableColumn>COMPLETION</TableColumn>
-            <TableColumn>TASK</TableColumn>
-            <TableColumn>TIMER</TableColumn>
-          </TableHeader>
-          <TableBody>
-            {taskStored.map((task) => (
-              <TableRow key="1">
-                <TableCell>
-                  <Checkbox
-                    onValueChange={() => {
-                      const deleteData = async () => {
-                        const { error } = await supabase
-                          .from("tasks")
-                          .delete()
-                          .eq("taskName", task.taskName);
-                        console.log(task.taskName, "deleated");
-                      };
-                      deleteData();
-                    }}
-                  ></Checkbox>
-                </TableCell>
-                <TableCell>{task.taskName}</TableCell>
-                <TableCell>
-                  <Button
-                    color="primary"
-                    variant="flat"
-                    onPress={onOpen}
-                    onClick={toggleFullScreen}
-                  >
-                    Start
-                  </Button>
-                  <Modal
-                    isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    isDismissable={false}
-                    isKeyboardDismissDisabled={true}
-                    classNames={{
-                      backdrop:
-                        "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
-                    }}
-                  >
-                    <ModalContent>
-                      {(onClose) => (
-                        <>
-                          <ModalHeader className="flex flex-col gap-1">
-                            Stopwatch
-                          </ModalHeader>
-                          <ModalBody>
-                            <div className="items-center flex justify-center w-full flex-col gap-8 p-12">
-                              <div className="text-7xl">{formattedTime}</div>
-                              <div className="inline-flex gap-6">
-                                <Button
-                                  onClick={handleStart}
-                                  disabled={isRunning}
-                                  variant="flat"
-                                  color="success"
-                                >
-                                  Start
-                                </Button>
-                                <Button
-                                  onClick={handleStop}
-                                  disabled={!isRunning}
-                                  variant="flat"
-                                  color="danger"
-                                >
-                                  Stop
-                                </Button>
-                                <Button onClick={handleReset}>Reset</Button>
+              )}
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="mt-8 px-12 w-full">
+          <Table
+            aria-label="Example static collection table"
+            className="w-full max-sm:w-full"
+          >
+            <TableHeader>
+              <TableColumn>COMPLETION</TableColumn>
+              <TableColumn>TASK</TableColumn>
+              <TableColumn>TIMER</TableColumn>
+            </TableHeader>
+            <TableBody emptyContent={"No Tasks to display."}>
+              {taskStored.map((task) => (
+                <TableRow key="1">
+                  <TableCell>
+                    <Checkbox
+                      onValueChange={() => {
+                        const deleteData = async () => {
+                          const { error } = await supabase
+                            .from("tasks")
+                            .delete()
+                            .eq("taskName", task.taskName);
+                          console.log(task.taskName, "deleated");
+                        };
+                        deleteData();
+                      }}
+                    ></Checkbox>
+                  </TableCell>
+                  <TableCell>{task.taskName}</TableCell>
+                  <TableCell>
+                    <Button
+                      color="primary"
+                      variant="flat"
+                      onPress={onOpen}
+                      onClick={toggleFullScreen}
+                    >
+                      Start
+                    </Button>
+                    <Modal
+                      isOpen={isOpen}
+                      onOpenChange={onOpenChange}
+                      isDismissable={false}
+                      isKeyboardDismissDisabled={true}
+                      classNames={{
+                        backdrop:
+                          "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
+                      }}
+                    >
+                      <ModalContent>
+                        {(onClose) => (
+                          <>
+                            <ModalHeader className="flex flex-col gap-1">
+                              Stopwatch
+                            </ModalHeader>
+                            <ModalBody>
+                              <div className="items-center flex justify-center w-full flex-col gap-8 p-12">
+                                <div className="text-7xl">{formattedTime}</div>
+                                <div className="inline-flex gap-6">
+                                  <Button
+                                    onClick={handleStart}
+                                    disabled={isRunning}
+                                    variant="flat"
+                                    color="success"
+                                  >
+                                    Start
+                                  </Button>
+                                  <Button
+                                    onClick={handleStop}
+                                    disabled={!isRunning}
+                                    variant="flat"
+                                    color="danger"
+                                  >
+                                    Stop
+                                  </Button>
+                                  <Button onClick={handleReset}>Reset</Button>
+                                </div>
                               </div>
-                            </div>
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button
-                              color="danger"
-                              variant="light"
-                              onPress={onClose}
-                              className="mt-6"
-                            >
-                              Close
-                            </Button>
-                          </ModalFooter>
-                        </>
-                      )}
-                    </ModalContent>
-                  </Modal>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Card className="my-8 w-1/2 max-sm:w-full">
-          <CardBody className="text-red inline-flex">
-            <div>
-              Alert: The Timer is going to reset when you exit the fullscreen
-              mode
-            </div>
-          </CardBody>
-        </Card>
+                            </ModalBody>
+                            <ModalFooter>
+                              <Button
+                                color="danger"
+                                variant="light"
+                                onPress={onClose}
+                                className="mt-6"
+                              >
+                                Close
+                              </Button>
+                            </ModalFooter>
+                          </>
+                        )}
+                      </ModalContent>
+                    </Modal>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Card className="my-8 w-1/2 max-sm:w-full">
+            <CardBody className="text-red inline-flex">
+              <div>
+                Alert: The Timer is going to reset when you exit the fullscreen
+                mode
+              </div>
+            </CardBody>
+          </Card>
+        </div>
       </div>
     </div>
   );

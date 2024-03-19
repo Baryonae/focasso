@@ -2,7 +2,12 @@
 import Image from "next/image";
 import { Paytone_One } from "next/font/google";
 import { supabase } from "./client";
-import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Chip,
+} from "@nextui-org/react";
 import {
   Navbar,
   NavbarBrand,
@@ -35,6 +40,7 @@ import Link from "next/link";
 import { Open_Sans } from "next/font/google";
 import { MdDeleteOutline } from "react-icons/md";
 import { FaPencilAlt } from "react-icons/fa";
+import { HiOutlinePencil } from "react-icons/hi";
 const opensans = Open_Sans({ weight: "300", subsets: ["latin"] });
 const Paytone = Paytone_One({ weight: "400", subsets: ["latin"] });
 
@@ -101,6 +107,7 @@ export default function Home() {
   interface Task {
     id: string;
     taskName: string;
+    status: string;
   }
   const [taskStored, setTaskStored] = useState<Task[]>([]);
   if (taskStored) {
@@ -121,6 +128,7 @@ export default function Home() {
       .from("tasks")
       .insert({ taskName: taskValue });
   }
+  const [editedTaskName, setEditedTaskName] = useState("");
 
   return (
     <div>
@@ -159,7 +167,7 @@ export default function Home() {
         </Navbar>
       </div>
       <div className="px-48 max-sm:p-0 px-auto my-20 max-md:p-0 max-lg:p-0">
-        <div className="mx-12 my-8 ">
+        <div className="mx-12 my-8">
           <Popover placement="right" showArrow offset={10}>
             <PopoverTrigger>
               <Button color="primary">Create new Task</Button>
@@ -216,7 +224,10 @@ export default function Home() {
                         };
                         deleteData();
                       }}
-                    ></Checkbox>
+                    ></Checkbox>{" "}
+                    <Chip color="secondary" variant="flat">
+                      {task.status}
+                    </Chip>
                   </TableCell>
                   <TableCell>{task.taskName}</TableCell>
                   <TableCell>
@@ -300,18 +311,57 @@ export default function Home() {
                         deleteItem();
                       }}
                     >
-                      <MdDeleteOutline />
+                      <MdDeleteOutline size={18} />
                     </Button>
-                    <Button
-                      isIconOnly
-                      color="warning"
-                      variant="faded"
-                      aria-label="Take a photo"
-                      className="mx-6"
-                      onClick={() => {}}
-                    >
-                      <FaPencilAlt />
-                    </Button>
+                    <Popover placement="right" showArrow offset={10}>
+                      <PopoverTrigger>
+                        <Button
+                          isIconOnly
+                          color="warning"
+                          variant="faded"
+                          aria-label="Take a photo"
+                          className="mx-6"
+                        >
+                          <HiOutlinePencil size={18} />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[240px]">
+                        {(titleProps) => (
+                          <div className="px-1 py-2 w-full">
+                            <p
+                              className="text-small font-bold text-foreground"
+                              {...titleProps}
+                            >
+                              Edit Task
+                            </p>
+                            <div className="mt-2 flex flex-col gap-2 w-full">
+                              <Input
+                                size="sm"
+                                variant="bordered"
+                                value={editedTaskName}
+                                onValueChange={setEditedTaskName}
+                              />
+
+                              <Button
+                                variant="flat"
+                                color="secondary"
+                                onClick={() => {
+                                  async function setChangedTask() {
+                                    const { error } = await supabase
+                                      .from("tasks")
+                                      .update({ taskName: editedTaskName })
+                                      .eq("taskName", task.taskName);
+                                  }
+                                  setChangedTask();
+                                }}
+                              >
+                                Change
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </PopoverContent>
+                    </Popover>
                   </TableCell>
                 </TableRow>
               ))}

@@ -4,6 +4,7 @@ get all your works done by using this application
 - in focus mode the timer will run until you complete your task
 - helps you organize your task by adding, deleting, and editing tasks
 - more features coming soon!
+- can see live preview at https://productivityapp-six.vercel.app
 
 ## Coming soon 
 ``` 
